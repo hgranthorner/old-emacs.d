@@ -15,6 +15,9 @@
 (package-initialize)
 
 ;; Initialize use package
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 (eval-when-compile
   (add-to-list 'load-path "/Users/grant/.emacs.d/elpa/use-package-20191126.2034")
   (require 'use-package))
@@ -98,8 +101,7 @@
   :interpreter ("haskell" . haskell-mode)
   :init
   (add-hook 'haskell-mode-hook 'structured-haskell-mode)
-  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-  (add-hook 'haskell-mode-hook (lambda () (yas-minor-mode))))
+  (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
 (use-package magit
   :ensure t
@@ -128,7 +130,7 @@
  '(custom-safe-themes
    (quote
     ("47ec21abaa6642fefec1b7ace282221574c2dd7ef7715c099af5629926eb4fd7" default)))
- '(flycheck-emacs-lisp-load-path (quote inherit))
+ '(flycheck-emacs-lisp-load-path (quote inherit) t)
  '(package-selected-packages
    (quote
     (use-package browse-kill-ring yasnippet-snippets yasnippet move-text multiple-cursors exec-path-from-shell flymake flymake-hlint haskell-mode magit company counsel ivy gruber-darker-theme smex)))
