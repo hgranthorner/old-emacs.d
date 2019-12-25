@@ -16,11 +16,12 @@
 
 ;; Initialize use package
 (eval-when-compile
-    (add-to-list 'load-path "/Users/grant/.emacs.d/elpa/use-package-20191126.2034")
+  (add-to-list 'load-path "/Users/grant/.emacs.d/elpa/use-package-20191126.2034")
   (require 'use-package))
 
 ;; Set path
 (use-package exec-path-from-shell
+  :ensure t
   :config
   (exec-path-from-shell-initialize))
 
