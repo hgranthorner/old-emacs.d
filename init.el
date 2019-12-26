@@ -19,8 +19,9 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (eval-when-compile
-  (add-to-list 'load-path "/Users/grant/.emacs.d/elpa/use-package-20191126.2034")
   (require 'use-package))
+(use-package diminish
+  :ensure t)
 
 ;; Set path
 (use-package exec-path-from-shell
@@ -32,6 +33,7 @@
   :ensure t)
 
 ;; Sensible startup
+(defalias 'yes-or-no-p 'y-or-n-p)
 (setq inhibit-startup-screen t)
 (setq ring-bell-function 'ignore)
 (set-frame-font "Ubuntu Mono 18" nil t)
@@ -44,9 +46,19 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "M-z") 'zap-up-to-char)
 (setq-default indent-tabs-mode nil)
+
+;; Dired configuration
 (add-hook 'dired-load-hook
           (lambda ()
             (load "dired-x")))
+(eval-after-load "dired"
+  '(progn
+     (define-key dired-mode-map "F" 'my-dired-find-file)
+     (defun my-dired-find-file (&optional arg)
+       "Open each of the marked files, or the file under the point, or when prefix arg, the next N files "
+       (interactive "P")
+       (let* ((fn-list (dired-get-marked-files nil arg)))
+         (mapc 'find-file fn-list)))))
 
 ;; Org mode
 (setq org-todo-keywords
@@ -81,13 +93,14 @@
 ;; Turn on company mode
 (use-package company
   :ensure t
-  :diminish t
+  :diminish company-mode
   :config
   (add-hook 'after-init-hook 'global-company-mode))
 
 ;; Flycheck config
 (use-package flycheck
   :defer t
+  :diminish flycheck-mode
   :ensure t
   :hook (prog-mode . flycheck-mode)
   :custom
@@ -113,6 +126,7 @@
 ;; Ivy
 (use-package ivy
   :ensure t
+  :diminish ivy-mode
   :init
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) ")
@@ -122,6 +136,7 @@
 
 (use-package counsel
   :ensure t
+  :diminish counsel-mode
   :config (counsel-mode 1))
 
 (custom-set-variables
