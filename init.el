@@ -130,6 +130,7 @@
   :init
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) ")
+  (setq ivy-display-style 'fancy)
   :config
   (ivy-mode 1)
   :bind ("C-x b" . 'ivy-switch-buffer))
@@ -138,6 +139,17 @@
   :ensure t
   :diminish counsel-mode
   :config (counsel-mode 1))
+
+(use-package swiper
+  :ensure t
+  :bind
+  ("C-s" . 'swiper)
+  ("C-r" . 'swiper))
+
+(use-package doom-modeline
+  :ensure t
+  :init (setq doom-modeline-major-mode-icon nil)
+  :hook (after-init . doom-modeline-mode))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -148,7 +160,7 @@
  '(custom-safe-themes
    (quote
     ("47ec21abaa6642fefec1b7ace282221574c2dd7ef7715c099af5629926eb4fd7" default)))
- '(flycheck-emacs-lisp-load-path (quote inherit) t)
+ '(flycheck-emacs-lisp-load-path (quote inherit))
  '(package-selected-packages
    (quote
     (use-package browse-kill-ring yasnippet-snippets yasnippet move-text multiple-cursors exec-path-from-shell flymake flymake-hlint haskell-mode magit company counsel ivy gruber-darker-theme smex)))
@@ -159,3 +171,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:foreground "#e4e4ef" :background "#181818")))))
+
+(provide 'init)
+;;; init.el ends here
