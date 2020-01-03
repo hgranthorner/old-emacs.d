@@ -24,8 +24,15 @@
 (eval-when-compile
   (require 'use-package))
 (setq use-package-always-ensure t)
+
 (use-package diminish)
 
+;; Update packages regularly
+(use-package auto-package-update
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
 
 ;; Set path on mac
 (use-package exec-path-from-shell
