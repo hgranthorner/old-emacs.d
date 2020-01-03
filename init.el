@@ -14,6 +14,9 @@
   )
 (package-initialize)
 
+;; Are we on a mac?
+(setq is-mac (equal system-type 'darwin))
+
 ;; Initialize use package
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -23,11 +26,11 @@
 (use-package diminish
   :ensure t)
 
-;; Set path
+;; Set path on mac
 (use-package exec-path-from-shell
   :ensure t
   :config
-  (exec-path-from-shell-initialize))
+  (when is-mac (exec-path-from-shell-initialize)))
 
 (use-package gruber-darker-theme
   :ensure t)
