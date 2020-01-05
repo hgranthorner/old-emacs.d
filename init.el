@@ -14,29 +14,39 @@
   )
 (package-initialize)
 
+;; Are we on a mac?
+(setq is-mac (equal system-type 'darwin))
+
 ;; Initialize use package
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 (eval-when-compile
   (require 'use-package))
-(use-package diminish
-  :ensure t)
+(setq use-package-always-ensure t)
 
-;; Set path
-(use-package exec-path-from-shell
-  :ensure t
+(use-package diminish)
+
+;; Update packages regularly
+(use-package auto-package-update
   :config
-  (exec-path-from-shell-initialize))
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
 
-(use-package gruber-darker-theme
-  :ensure t)
+;; Set path on mac
+(use-package exec-path-from-shell
+  :config
+  (when is-mac (exec-path-from-shell-initialize)))
+
+(use-package gruber-darker-theme)
+
 
 ;; Sensible startup
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq inhibit-startup-screen t)
 (setq ring-bell-function 'ignore)
-(set-frame-font "Ubuntu Mono 18" nil t)
+(set-frame-font "Ubuntu Mono 17" nil t)
 (setq backup-directory-alist '(("." . "~/.emacs_backups")))
 (setq mac-command-modifier 'control)
 (menu-bar-mode -1)
@@ -79,12 +89,10 @@
           (lambda ()
             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
               ;; indent
-              (fix-c-indent-offset-according-to-syntax-context 'substatement-open 0))
-            ))
+              (fix-c-indent-offset-according-to-syntax-context 'substatement-open 0))))
 
 ;; Multiple cursors
 (use-package multiple-cursors
-  :ensure t
   :bind
   ("C->" . 'mc/mark-next-like-this)
   ("C-<" . 'mc/mark-previous-like-this)
@@ -92,7 +100,6 @@
 
 ;; Turn on company mode
 (use-package company
-  :ensure t
   :diminish company-mode
   :config
   (add-hook 'after-init-hook 'global-company-mode))
@@ -101,7 +108,6 @@
 (use-package flycheck
   :defer t
   :diminish flycheck-mode
-  :ensure t
   :hook (prog-mode . flycheck-mode)
   :custom
   (flycheck-emacs-lisp-load-path 'inherit)
@@ -116,7 +122,6 @@
   (flycheck-clang-analyzer-setup))
 
 (use-package haskell-mode
-  :ensure t
   :mode (("\\.hs\\'"    . haskell-mode)
          ("\\.cabal\\'" . haskell-cabal-mode)
          ("\\.hcr\\'"   . haskell-core-mode))
@@ -126,12 +131,10 @@
   (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
 (use-package magit
-  :ensure t
   :bind ("C-x g" . 'magit-status))
 
 ;; Ivy
 (use-package ivy
-  :ensure t
   :diminish ivy-mode
   :init
   (setq ivy-use-virtual-buffers t)
@@ -142,18 +145,15 @@
   :bind ("C-x b" . 'ivy-switch-buffer))
 
 (use-package counsel
-  :ensure t
   :diminish counsel-mode
   :config (counsel-mode 1))
 
 (use-package swiper
-  :ensure t
   :bind
   ("C-s" . 'swiper)
   ("C-r" . 'swiper))
 
 (use-package doom-modeline
-  :ensure t
   :init (setq doom-modeline-major-mode-icon nil)
   :hook (after-init . doom-modeline-mode))
 1
