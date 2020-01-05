@@ -109,6 +109,12 @@
   (flycheck-add-mode 'javascript-eslint 'js-mode)
   (flycheck-add-mode 'typescript-tslint 'rjsx-mode))
 
+(use-package flycheck-clang-analyzer
+  :defer t
+  :ensure t
+  :config
+  (flycheck-clang-analyzer-setup))
+
 (use-package haskell-mode
   :ensure t
   :mode (("\\.hs\\'"    . haskell-mode)
@@ -150,7 +156,7 @@
   :ensure t
   :init (setq doom-modeline-major-mode-icon nil)
   :hook (after-init . doom-modeline-mode))
-
+1
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
